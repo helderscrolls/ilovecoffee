@@ -11,14 +11,6 @@ import appConfig from './config/app.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      load: [appConfig],
-      validationSchema: Joi.object({
-        DATABASE_HOST: Joi.required(),
-        DATABASE_PORT: Joi.number().default(5432),
-      }),
-    }),
-    CoffeesModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres', // type of our database
@@ -31,6 +23,14 @@ import appConfig from './config/app.config';
         synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
       }),
     }),
+    ConfigModule.forRoot({
+      load: [appConfig],
+      validationSchema: Joi.object({
+        DATABASE_HOST: Joi.required(),
+        DATABASE_PORT: Joi.number().default(5432),
+      }),
+    }),
+    CoffeesModule,
     CoffeeRatingModule,
     DatabaseModule,
   ],
